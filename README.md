@@ -338,8 +338,332 @@ random = {
 И в main.tf в модулях изменил **git::https://github.com/udjin10/yandex_compute_instance.git?ref=main** на **git::https://github.com/udjin10/yandex_compute_instance.git?ref=v2.1.0**
 
 Проверил код через ```checkov --skip-download -d .``` и получил следующие предупреждения:
+```
+Check: CKV_TF_1: "Ensure Terraform module sources use a commit hash"
+        FAILED for resource: marketing-vm
+        File: /main.tf:7-22
 
+                7  | module "marketing-vm" {
+                8  |   source         = "git::https://github.com/udjin10/yandex_compute_instance.git?ref=main"
+                9  |   network_id     = module.vpc.network_id
+                10 |   subnet_zones   = var.default_zone
+                11 |   subnet_ids     = [for zone in var.default_zone : try(module.vpc.subnet_id_by_zone[zone], null)]
+                12 |   instance_name  = var.vm_instance_name.marketing
+                13 |   instance_count = 2
+                14 |   image_family   = var.vm_image_family_ubuntu.marketing
+                15 |   public_ip      = var.vm_public_ip.marketing
+                16 |   labels         = var.vm_labels.marketing
+                17 | 
+                18 |   metadata = {
+                19 |     user-data          = data.template_file.cloudinit.rendered
+                20 |     serial-port-enable = var.vm_metadata_serial_port.analytics
+                21 |   }
+                22 | }
 
+Check: CKV_TF_2: "Ensure Terraform module sources use a tag with a version number"
+        FAILED for resource: marketing-vm
+        File: /main.tf:7-22
 
+                7  | module "marketing-vm" {
+                8  |   source         = "git::https://github.com/udjin10/yandex_compute_instance.git?ref=main"
+                9  |   network_id     = module.vpc.network_id
+                10 |   subnet_zones   = var.default_zone
+                11 |   subnet_ids     = [for zone in var.default_zone : try(module.vpc.subnet_id_by_zone[zone], null)]
+                12 |   instance_name  = var.vm_instance_name.marketing
+                13 |   instance_count = 2
+                14 |   image_family   = var.vm_image_family_ubuntu.marketing
+                15 |   public_ip      = var.vm_public_ip.marketing
+                16 |   labels         = var.vm_labels.marketing
+                17 | 
+                18 |   metadata = {
+                19 |     user-data          = data.template_file.cloudinit.rendered
+                20 |     serial-port-enable = var.vm_metadata_serial_port.analytics
+                21 |   }
+                22 | }
 
+Check: CKV_TF_1: "Ensure Terraform module sources use a commit hash"
+        FAILED for resource: analytics-vm
+        File: /main.tf:24-39
 
+                24 | module "analytics-vm" {
+                25 |   source         = "git::https://github.com/udjin10/yandex_compute_instance.git?ref=main"
+                26 |   network_id     = module.vpc.network_id
+                27 |   subnet_zones   = var.default_zone
+                28 |   subnet_ids     = [for zone in var.default_zone : try(module.vpc.subnet_id_by_zone[zone], null)]
+                29 |   instance_name  = var.vm_instance_name.analytics
+                30 |   instance_count = 1
+                31 |   image_family   = var.vm_image_family_ubuntu.analytics
+                32 |   public_ip      = var.vm_public_ip.analytics
+                33 |   labels         = var.vm_labels.analytics
+                34 | 
+                35 |   metadata = {
+                36 |     user-data          = data.template_file.cloudinit.rendered
+                37 |     serial-port-enable = var.vm_metadata_serial_port.analytics
+                38 |   }
+                39 | }
+
+Check: CKV_TF_2: "Ensure Terraform module sources use a tag with a version number"
+        FAILED for resource: analytics-vm
+        File: /main.tf:24-39
+
+                24 | module "analytics-vm" {
+                25 |   source         = "git::https://github.com/udjin10/yandex_compute_instance.git?ref=main"
+                26 |   network_id     = module.vpc.network_id
+                27 |   subnet_zones   = var.default_zone
+                28 |   subnet_ids     = [for zone in var.default_zone : try(module.vpc.subnet_id_by_zone[zone], null)]
+                29 |   instance_name  = var.vm_instance_name.analytics
+                30 |   instance_count = 1
+                31 |   image_family   = var.vm_image_family_ubuntu.analytics
+                32 |   public_ip      = var.vm_public_ip.analytics
+                33 |   labels         = var.vm_labels.analytics
+                34 | 
+                35 |   metadata = {
+                36 |     user-data          = data.template_file.cloudinit.rendered
+                37 |     serial-port-enable = var.vm_metadata_serial_port.analytics
+                38 |   }
+                39 | }
+
+Check: CKV_YC_1: "Ensure security group is assigned to database cluster."
+        FAILED for resource: module.mysql_cluster.yandex_mdb_mysql_cluster.cluster
+        File: /mysql/main.tf:10-36
+        Calling File: /main.tf:59-66
+
+                10 | resource "yandex_mdb_mysql_cluster" "cluster" {
+                11 |   name                = var.name
+                12 |   environment         = var.environment
+                13 |   network_id          = var.network_id
+                14 |   version             = var.mysql_version
+                15 | 
+                16 |   resources {
+                17 |     resource_preset_id = var.resource_preset_id
+                18 |     disk_type_id       = var.disk_type
+                19 |     disk_size          = var.disk_size
+                20 |   }
+                21 | 
+                22 |   host {
+                23 |     zone             = var.zone
+                24 |     subnet_id        = var.subnet_id
+                25 |     assign_public_ip = var.public_ip
+                26 |   }
+                27 | 
+                28 |   dynamic "host" {
+                29 |     for_each = range(var.ha ? 1 : 0)
+                30 |     content {
+                31 |       zone             = var.zone
+                32 |       subnet_id        = var.subnet_id
+                33 |       assign_public_ip = var.public_ip
+                34 |     }
+                35 |   }
+                36 | }
+```
+Для начала Исправил ошибки **Ensure Terraform module sources use a commit hash** и добавил хеш необходимого коммита ```git::https://github.com/udjin10/yandex_compute_instance.git?ref=97fe51b7341df99a57ff717e42347e185232fa31```. Далее для исправления предупреждения об отсутствии групп безопасности у кластера баз данных решил модифицировать модуль **vpc**. Добавил в **vpc/main.tf** ресурс **yandex_vpc_security_group**:
+```
+resource "yandex_vpc_security_group" "security" {
+  for_each = var.security_group
+
+  name       = each.key
+  network_id = yandex_vpc_network.network.id
+  folder_id  = var.folder_id
+
+  dynamic "ingress" {
+    for_each = each.value.ingress
+    content {
+      protocol       = lookup(ingress.value, "protocol", null)
+      description    = lookup(ingress.value, "description", null)
+      port           = lookup(ingress.value, "port", null)
+      from_port      = lookup(ingress.value, "from_port", null)
+      to_port        = lookup(ingress.value, "to_port", null)
+      v4_cidr_blocks = lookup(ingress.value, "v4_cidr_blocks", null)
+    }
+  }
+
+  dynamic "egress" {
+    for_each = each.value.egress
+    content {
+      protocol       = lookup(egress.value, "protocol", null)
+      description    = lookup(egress.value, "description", null)
+      port           = lookup(egress.value, "port", null)
+      from_port      = lookup(egress.value, "from_port", null)
+      to_port        = lookup(egress.value, "to_port", null)
+      v4_cidr_blocks = lookup(egress.value, "v4_cidr_blocks", null)
+    }
+  }
+}
+```
+Далее в **vpc/variables.tf** переменную **security_group**:
+```
+variable "security_group" {
+  type = map(object({
+    ingress = list(object({
+      protocol       = string
+      description    = string
+      v4_cidr_blocks = list(string)
+      port           = optional(number)
+      from_port      = optional(number)
+      to_port        = optional(number)
+    }))
+    egress = list(object({
+      protocol       = string
+      description    = string
+      v4_cidr_blocks = list(string)
+      port           = optional(number)
+      from_port      = optional(number)
+      to_port        = optional(number)
+    }))
+  }))
+
+  default = {
+    security1 = {
+      ingress = [
+        {
+          protocol       = "TCP"
+          description    = "разрешить входящий ssh"
+          v4_cidr_blocks = ["0.0.0.0/0"]
+          port           = 22
+        },
+        { 
+          protocol       = "TCP"
+          description    = "разрешить входящий  http"
+          v4_cidr_blocks = ["0.0.0.0/0"]
+          port           = 80
+        },
+        { 
+          protocol       = "TCP"
+          description    = "разрешить входящий https"
+          v4_cidr_blocks = ["0.0.0.0/0"]
+          port           = 443
+        }
+      ]
+      egress = [
+        {
+          protocol       = "TCP"
+          description    = "разрешить весь исходящий трафик"
+          v4_cidr_blocks = ["0.0.0.0/0"]
+          from_port      = 0
+          to_port        = 65365
+        }
+      ]
+    }
+  }
+}       
+```
+Переменная была создана именно в таком виде, потому что я хотел, чтобы можно было создавать сразу несколько разных групп безопасности в рамках модуля **vpc**, а далее добавлять их к необходимым ресурсам в любом количестве. Поэтому мы в ресурсе с группами безопасности итерируемся по ключам(названиям групп безопасности), создавая такое количество групп безопасностей сколько имён у мапы в переменной **security_group**, а внутри них уже добавляем необходимое количество **ingress** и **egress** правил.
+Также для получения **id** группы безопасностей в рут модуле был создан **output**:
+```
+output "security_id_by_name" {
+  value = { for k, v in yandex_vpc_security_group.security: v.name => v.id }
+}
+```
+В котором id необходимой группы можно получить через её имя
+
+Далее в рут модуле **main.tf** был отредактирован модуль **vpc**, а именно добавлены поля **security_group** и **folder_id**:
+```
+module "vpc" {
+  source = "./vpc"
+  name = var.vpc_name
+  subnets = var.vpc_subnets
+  security_group = var.security_groups 
+  folder_id = var.folder_id
+}
+```
+А также был отредактирован модуль **mysql_cluster**(как в рут модуле, так и в папке самого модуля mysql) и добавлено поле ```security_group_ids = local.security_group_ids``` в рут модуле и ```security_group_ids  = var.security_group_ids``` в папке с самим модулем. Обращение к locals пришлось использовать т.к. не было возможности передать список из групп безопасности динамически... Можно было только передать значение в виде ```module.vpc.security_id_by_name[var.security_group_name]```, но в таком случае можно привязать только 1 группу безопасности, поэтому в locals было добавлено формирование списка:
+```
+security_group_ids = [
+    for name in var.mysql_cluster_security_groups: module.vpc.security_id_by_name[name]
+  ]
+```
+А также добавлены переменные в **variables.tf**:
+```
+variable "mysql_cluster_security_groups" {
+  type = list(string)
+}
+```
+и
+```
+variable "security_groups" {
+  type = map(object({
+    ingress = list(object({
+      protocol       = string
+      description    = string
+      v4_cidr_blocks = list(string)
+      port           = optional(number)
+      from_port      = optional(number)
+      to_port        = optional(number)
+    }))
+    egress  = list(object({
+      protocol       = string
+      description    = string
+      v4_cidr_blocks = list(string)
+      port           = optional(number)
+      from_port      = optional(number)
+      to_port        = optional(number)
+    }))
+  }))
+}
+```
+В terraform.tfvars декларация групп безопасности выглядит так:
+```
+security_groups = {
+  sec1 = {
+    ingress = [
+      {
+        protocol       = "TCP"
+        description    = "разрешить входящий ssh"
+        v4_cidr_blocks = ["0.0.0.0/0"]
+        port           = 22
+      },
+      { 
+        protocol       = "TCP"
+        description    = "разрешить входящий  http"
+        v4_cidr_blocks = ["0.0.0.0/0"]
+        port           = 80
+      },
+      { 
+        protocol       = "TCP"
+        description    = "разрешить входящий https"
+        v4_cidr_blocks = ["0.0.0.0/0"]
+        port           = 443
+      }
+    ]
+    egress = [
+      {
+        protocol       = "TCP"
+        description    = "разрешить весь исходящий трафик"
+        v4_cidr_blocks = ["0.0.0.0/0"]
+        from_port      = 0
+        to_port        = 65365
+      }
+    ]
+  }
+  sec-database = {
+    ingress = [
+      {
+        protocol       = "TCP"
+        description    = "разрешить входящий ssh"
+        v4_cidr_blocks = ["0.0.0.0/0"]
+        port           = 22
+      },
+      { 
+        protocol       = "TCP"
+        description    = "разрешить входящий трафик на СУБД"
+        v4_cidr_blocks = ["0.0.0.0/0"]
+        port           = 3306
+      }
+
+    ]
+    egress = [
+      {
+        protocol       = "TCP"
+        description    = "разрешить весь исходящий трафик"
+        v4_cidr_blocks = ["0.0.0.0/0"]
+        from_port      = 0
+        to_port        = 65365
+      }
+    ]
+  }
+}
+```
+А указание необходимые групп безопасности для привязки к кластеру БД так:
+```
+mysql_cluster_security_groups = ["sec-database"]
+```
