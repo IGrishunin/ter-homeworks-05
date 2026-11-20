@@ -663,6 +663,7 @@ security_groups = {
   }
 }
 ```
+Ссылка на PR <a>https://github.com/IGrishunin/ter-homework-04/pull/2/files</a>
 А указание необходимые групп безопасности для привязки к кластеру БД так:
 ```
 mysql_cluster_security_groups = ["sec-database"]
