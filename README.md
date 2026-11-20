@@ -1,522 +1,899 @@
+# ter-homeworks-05
 # Задача 1
-<img width="1346" height="345" alt="image" src="https://github.com/user-attachments/assets/af9a6fc1-3e3e-42e1-a094-d7231f3219d7" />
-
-<img width="812" height="635" alt="image" src="https://github.com/user-attachments/assets/a0bc74b9-8e8f-4dd4-9aee-5dc66624fabf" />
-
-Вывод ```terraform console```
+Результат выполнения ```tflint``` в коде проекта src
 ```
-mfc-admin@nb-grishunin:~/NETOLOGY/ter-homeworks/04/src$ terraform console
-> module.marketing-vm
-{
-  "all" = [
-    {
-      "allow_recreate" = tobool(null)
-      "allow_stopping_for_update" = true
-      "boot_disk" = tolist([
-        {
-          "auto_delete" = true
-          "device_name" = "fv4dbts33vsa1pnn8rqk"
-          "disk_id" = "fv4dbts33vsa1pnn8rqk"
-          "initialize_params" = tolist([
-            {
-              "block_size" = 4096
-              "description" = ""
-              "image_id" = "fd84np9sg3hrgaoisfnj"
-              "kms_key_id" = ""
-              "name" = ""
-              "size" = 10
-              "snapshot_id" = ""
-              "type" = "network-hdd"
-            },
-          ])
-          "mode" = "READ_WRITE"
-        },
-      ])
-      "created_at" = "2026-11-15T20:23:26Z"
-      "description" = "TODO: description; {{terraform yyy managed}}"
-      "filesystem" = toset([])
-      "folder_id" = "b1gjeu5fo05f0jh5mfug"
-      "fqdn" = "marketing-0.ru-central1.internal"
-      "gpu_cluster_id" = ""
-      "hardware_generation" = tolist([
-        {
-          "generation2_features" = tolist([])
-          "legacy_features" = tolist([
-            {
-              "pci_topology" = "PCI_TOPOLOGY_V2"
-            },
-          ])
-        },
-      ])
-      "hostname" = "marketing-0"
-      "id" = "fv4275dp9h057fmpv4nv"
-      "labels" = tomap({
-        "project" = "marketing"
-      })
-      "local_disk" = tolist([])
-      "maintenance_grace_period" = ""
-      "maintenance_policy" = tostring(null)
-      "metadata" = tomap({
-        "serial-port-enable" = "1"
-        "user-data" = <<-EOT
-        #cloud-config
-        users:
-          - name: ubuntu
-            groups: sudo
-            shell: /bin/bash
-            sudo: ["ALL=(ALL) NOPASSWD:ALL"]
-            ssh_authorized_keys:
-              - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOmRn0dsEASZhy3tV6ZMLvffGNmZGXgdpT9+DMIAhPJb mfc-admin@nb-grishunin.mfcl.mfclnr.ru
-        
-        package_update: true
-        package_upgrade: false
-        packages: ["vim","nginx"]
-        
-        EOT
-      })
-      "metadata_options" = tolist([
-        {
-          "aws_v1_http_endpoint" = 1
-          "aws_v1_http_token" = 2
-          "aws_v2_http_endpoint" = 1
-          "aws_v2_http_token" = 1
-          "gce_http_endpoint" = 1
-          "gce_http_token" = 1
-        },
-      ])
-      "name" = "marketing-0"
-      "network_acceleration_type" = "standard"
-      "network_interface" = tolist([
-        {
-          "dns_record" = tolist([])
-          "index" = 0
-          "ip_address" = "10.0.1.32"
-          "ipv4" = true
-          "ipv6" = false
-          "ipv6_address" = ""
-          "ipv6_dns_record" = tolist([])
-          "mac_address" = "d0:0d:23:95:b9:4c"
-          "nat" = true
-          "nat_dns_record" = tolist([])
-          "nat_ip_address" = "153.51.165.88"
-          "nat_ip_version" = "IPV4"
-          "security_group_ids" = toset(null) /* of string */
-          "subnet_id" = "fl89ihvfqkkeomhmpjj4"
-        },
-      ])
-      "placement_policy" = tolist([
-        {
-          "host_affinity_rules" = tolist([])
-          "placement_group_id" = ""
-          "placement_group_partition" = 0
-        },
-      ])
-      "platform_id" = "standard-v3"
-      "reserved_instance_pool_id" = ""
-      "resources" = tolist([
-        {
-          "core_fraction" = 20
-          "cores" = 2
-          "gpus" = 0
-          "memory" = 1
-        },
-      ])
-      "scheduling_policy" = tolist([
-        {
-          "preemptible" = true
-        },
-      ])
-      "secondary_disk" = toset([])
-      "service_account_id" = ""
-      "status" = "running"
-      "timeouts" = null /* object */
-      "zone" = "ru-central1-d"
-    },
-  ]
-  "external_ip_address" = [
-    "153.51.165.88",
-  ]
-  "fqdn" = [
-    "marketing-0.ru-central1.internal",
-  ]
-  "internal_ip_address" = [
-    "10.0.1.32",
-  ]
-  "labels" = [
-    tomap({
-      "project" = "marketing"
-    }),
-  ]
-  "network_interface" = [
-    tolist([
-      {
-        "dns_record" = tolist([])
-        "index" = 0
-        "ip_address" = "10.0.1.32"
-        "ipv4" = true
-        "ipv6" = false
-        "ipv6_address" = ""
-        "ipv6_dns_record" = tolist([])
-        "mac_address" = "d0:0d:23:95:b9:4c"
-        "nat" = true
-        "nat_dns_record" = tolist([])
-        "nat_ip_address" = "153.51.165.88"
-        "nat_ip_version" = "IPV4"
-        "security_group_ids" = toset(null) /* of string */
-        "subnet_id" = "fl89ihvfqkkeomhmpjj4"
-      },
-    ]),
-  ]
-}
+4 issue(s) found:
+
+Warning: Missing version constraint for provider "yandex" in `required_providers` (terraform_required_providers)
+
+  on providers.tf line 3:
+   3:     yandex = {
+   4:       source = "yandex-cloud/yandex"
+   5:     }
+
+Reference: https://github.com/terraform-linters/tflint-ruleset-terraform/blob/v0.17.0/docs/rules/terraform_required_providers.md
+
+Warning: [Fixable] variable "vms_ssh_root_key" is declared but not used (terraform_unused_declarations)
+
+  on variables.tf line 36:
+  36: variable "vms_ssh_root_key" {
+
+Reference: https://github.com/terraform-linters/tflint-ruleset-terraform/blob/v0.17.0/docs/rules/terraform_unused_declarations.md
+
+Warning: [Fixable] variable "vm_web_name" is declared but not used (terraform_unused_declarations)
+
+  on variables.tf line 43:
+  43: variable "vm_web_name" {
+
+Reference: https://github.com/terraform-linters/tflint-ruleset-terraform/blob/v0.17.0/docs/rules/terraform_unused_declarations.md
+
+Warning: [Fixable] variable "vm_db_name" is declared but not used (terraform_unused_declarations)
+
+  on variables.tf line 50:
+  50: variable "vm_db_name" {
+
+Reference: https://github.com/terraform-linters/tflint-ruleset-terraform/blob/v0.17.0/docs/rules/terraform_unused_declarations.md
 ```
-# задача 2
-Terraform docs
-## Requirements
+Проблемы:
+1) Не указана версия провайдера Яндекс
+2) Переменная **vms_ssh_root_key** объявлена, но нигде не используется
+3) Переменная **vm_web_name** объявлена, но нигде не используется
+4) Переменная **vm_db_name** объявлена, но нигде не используется
+Результат выполнения ```checkov --skip-download -d .``` в src
+Проблем не обнаружено
 
-| Name | Version |
-| ---- | ------- |
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >1.12.0 |
+Результат выполнения ```tflint``` в коде проекта demostration1:
+Проблем не обнаружено
 
-## Providers
+Результат выполнения ```checkov --skip-download -d .``` в demostration1:
+```
+[ kubernetes framework ]: 100%|████████████████████|[1/1], Current File Scanned=vms/cloud-init.yml
+2026-11-19 15:40:55,849 [MainThread  ] [WARNI]  Failed to download module git::https://github.com/udjin10/yandex_compute_instance.git?ref=main (for external modules, the --download-external-modules flag is required)
+[ terraform framework ]: 100%|████████████████████|[7/7], Current File Scanned=vms/variables.tf                 
+[ secrets framework ]: 100%|████████████████████|[8/8], Current File Scanned=./passwords/remote_state_outputs.tf
+[ ansible framework ]: 100%|████████████████████|[1/1], Current File Scanned=vms/cloud-init.yml
 
-| Name | Version |
-| ---- | ------- |
-| <a name="provider_yandex"></a> [yandex](#provider\_yandex) | n/a |
+       _               _
+   ___| |__   ___  ___| | _______   __
+  / __| '_ \ / _ \/ __| |/ / _ \ \ / /
+ | (__| | | |  __/ (__|   < (_) \ V /
+  \___|_| |_|\___|\___|_|\_\___/ \_/
 
-## Modules
+By Prisma Cloud | version: 3.4.6 
 
-No modules.
+terraform scan results:
 
-## Resources
+Passed checks: 0, Failed checks: 4, Skipped checks: 0
 
-| Name | Type |
-| ---- | ---- |
-| [yandex_vpc_network.network](https://registry.terraform.io/providers/yandex-cloud/yandex/latest/docs/resources/vpc_network) | resource |
-| [yandex_vpc_subnet.subnet](https://registry.terraform.io/providers/yandex-cloud/yandex/latest/docs/resources/vpc_subnet) | resource |
+Check: CKV_TF_1: "Ensure Terraform module sources use a commit hash"
+        FAILED for resource: test-vm
+        File: /vms/main.tf:22-43
 
-## Inputs
+                22 | module "test-vm" {
+                23 |   source         = "git::https://github.com/udjin10/yandex_compute_instance.git?ref=main"
+                24 |   env_name       = "develop" 
+                25 |   network_id     = yandex_vpc_network.develop.id
+                26 |   subnet_zones   = ["ru-central1-a","ru-central1-b"]
+                27 |   subnet_ids     = [yandex_vpc_subnet.develop_a.id,yandex_vpc_subnet.develop_b.id]
+                28 |   instance_name  = "webs"
+                29 |   instance_count = 2
+                30 |   image_family   = "ubuntu-2004-lts"
+                31 |   public_ip      = true
+                32 | 
+                33 |   labels = { 
+                34 |     owner= "i.ivanov",
+                35 |     project = "accounting"
+                36 |      }
+                37 | 
+                38 |   metadata = {
+                39 |     user-data          = data.template_file.cloudinit.rendered #Для демонстрации №3
+                40 |     serial-port-enable = 1
+                41 |   }
+                42 | 
+                43 | }
 
-| Name | Description | Type | Default | Required |
-| ---- | ----------- | ---- | ------- | :------: |
-| <a name="input_cidr"></a> [cidr](#input\_cidr) | n/a | `list(string)` | <pre>[<br/>  "10.100.0.0/24"<br/>]</pre> | no |
-| <a name="input_name"></a> [name](#input\_name) | n/a | `string` | `"develop"` | no |
-| <a name="input_zone"></a> [zone](#input\_zone) | n/a | `string` | `"ru-central1-d"` | no |
+Check: CKV_TF_2: "Ensure Terraform module sources use a tag with a version number"
+        FAILED for resource: test-vm
+        File: /vms/main.tf:22-43
 
-## Outputs
+                22 | module "test-vm" {
+                23 |   source         = "git::https://github.com/udjin10/yandex_compute_instance.git?ref=main"
+                24 |   env_name       = "develop" 
+                25 |   network_id     = yandex_vpc_network.develop.id
+                26 |   subnet_zones   = ["ru-central1-a","ru-central1-b"]
+                27 |   subnet_ids     = [yandex_vpc_subnet.develop_a.id,yandex_vpc_subnet.develop_b.id]
+                28 |   instance_name  = "webs"
+                29 |   instance_count = 2
+                30 |   image_family   = "ubuntu-2004-lts"
+                31 |   public_ip      = true
+                32 | 
+                33 |   labels = { 
+                34 |     owner= "i.ivanov",
+                35 |     project = "accounting"
+                36 |      }
+                37 | 
+                38 |   metadata = {
+                39 |     user-data          = data.template_file.cloudinit.rendered #Для демонстрации №3
+                40 |     serial-port-enable = 1
+                41 |   }
+                42 | 
+                43 | }
 
-| Name | Description |
-| ---- | ----------- |
-| <a name="output_network_id"></a> [network\_id](#output\_network\_id) | Выводит id созданной сети |
-| <a name="output_subnet"></a> [subnet](#output\_subnet) | Вывод всех параметров подсети |
-| <a name="output_subnet_id"></a> [subnet\_id](#output\_subnet\_id) | Выводит id созданной подсети |
+Check: CKV_TF_1: "Ensure Terraform module sources use a commit hash"
+        FAILED for resource: example-vm
+        File: /vms/main.tf:45-61
+
+                45 | module "example-vm" {
+                46 |   source         = "git::https://github.com/udjin10/yandex_compute_instance.git?ref=main"
+                47 |   env_name       = "stage"
+                48 |   network_id     = yandex_vpc_network.develop.id
+                49 |   subnet_zones   = ["ru-central1-a"]
+                50 |   subnet_ids     = [yandex_vpc_subnet.develop_a.id]
+                51 |   instance_name  = "web-stage"
+                52 |   instance_count = 1
+                53 |   image_family   = "ubuntu-2004-lts"
+                54 |   public_ip      = true
+                55 | 
+                56 |   metadata = {
+                57 |     user-data          = data.template_file.cloudinit.rendered #Для демонстрации №3
+                58 |     serial-port-enable = 1
+                59 |   }
+                60 | 
+                61 | }
+
+Check: CKV_TF_2: "Ensure Terraform module sources use a tag with a version number"
+        FAILED for resource: example-vm
+        File: /vms/main.tf:45-61
+
+                45 | module "example-vm" {
+                46 |   source         = "git::https://github.com/udjin10/yandex_compute_instance.git?ref=main"
+                47 |   env_name       = "stage"
+                48 |   network_id     = yandex_vpc_network.develop.id
+                49 |   subnet_zones   = ["ru-central1-a"]
+                50 |   subnet_ids     = [yandex_vpc_subnet.develop_a.id]
+                51 |   instance_name  = "web-stage"
+                52 |   instance_count = 1
+                53 |   image_family   = "ubuntu-2004-lts"
+                54 |   public_ip      = true
+                55 | 
+                56 |   metadata = {
+                57 |     user-data          = data.template_file.cloudinit.rendered #Для демонстрации №3
+                58 |     serial-port-enable = 1
+                59 |   }
+                60 | 
+                61 | }
+```
+Проблемы:
+1) Требует указать хеш коммита для модуля в блоке source
+2) Требует указать версию модуля отдельным тегом(не в блоке source)
+
+# Задача 2
+В **providers.tf** добавил секцию **backend**
+```
+backend "s3" {
+    profile = "default"
+    bucket  = "simple-bucket-izb3ldj2"
+    key     = "terraform.tfstate"
+    region  = "ru-central1"
+
+    use_lockfile = true
+
+    endpoints = {
+      s3 = "https://storage.yandexcloud.net"
+    }
+
+    skip_region_validation      = true
+    skip_credentials_validation = true
+    skip_requesting_account_id  = true
+    skip_s3_checksum            = true
+  }
+```
+Создал в домашнем каталоге пользователя **.aws/credentials** и записал туда статический ключ от сервисного аккаунта
+Выполнил ```terraform ini -migrate-state``` и получил вывод:
+```
+Initializing the backend...
+Do you want to copy existing state to the new backend?
+  Pre-existing state was found while migrating the previous "local" backend to the
+  newly configured "s3" backend. No existing state was found in the newly
+  configured "s3" backend. Do you want to copy this state to the new "s3"
+  backend? Enter "yes" to copy and "no" to start with an empty state.
+
+  Enter a value: yes
+
+
+Successfully configured the backend "s3"! Terraform will automatically
+use this backend unless the backend configuration changes.
+Initializing modules...
+Initializing provider plugins...
+- Reusing previous version of yandex-cloud/yandex from the dependency lock file
+- Reusing previous version of hashicorp/random from the dependency lock file
+- Reusing previous version of hashicorp/template from the dependency lock file
+- Using previously-installed yandex-cloud/yandex v0.250.0
+- Using previously-installed hashicorp/random v3.9.1
+- Using previously-installed hashicorp/template v2.2.0
+
+Terraform has been successfully initialized!
+
+You may now begin working with Terraform. Try running "terraform plan" to see
+any changes that are required for your infrastructure. All Terraform commands
+should now work.
+
+If you ever set or change modules or backend configuration for Terraform,
+rerun this command to reinitialize your working directory. If you forget, other
+commands will detect it and remind you to do so if necessary.
+```
+Запустил ```terraform console```, а в другом окне ```terraform plan```. Получил ошибку блокировки:
+```
+Error: Error acquiring the state lock
+│ 
+│ Error message: operation error S3: PutObject, https response error StatusCode: 412, RequestID: 3ea51e4cc6413244, HostID: , api error PreconditionFailed: At least
+│ one of the pre-conditions you specified did not hold
+│ Lock Info:
+│   ID:        12106dae-3405-d728-a764-6b70490b2383
+│   Path:      simple-bucket-izb3ldj2/terraform.tfstate
+│   Operation: OperationTypeInvalid
+│   Who:       i.grishunin@igrishunin.mfcl.mfclnr.ru
+│   Version:   1.14.6
+│   Created:   2026-11-19 13:44:52.804498808 +0000 UTC
+│   Info:      
+│ 
+│ 
+│ Terraform acquires a state lock to protect the state from being written
+│ by multiple users at the same time. Please resolve the issue above and try
+│ again. For most commands, you can disable locking with the "-lock=false"
+│ flag, but this is not recommended.
+```
+Выполнил ```terraform force-unlock 12106dae-3405-d728-a764-6b70490b2383``` 
+```
+Do you really want to force-unlock?
+  Terraform will remove the lock on the remote state.
+  This will allow local Terraform commands to modify this state, even though it
+  may still be in use. Only 'yes' will be accepted to confirm.
+
+  Enter a value: yes
+
+Terraform state has been successfully unlocked!
+
+The state has been unlocked, and Terraform commands should now be able to
+obtain a new lock on the remote state.
+```
+После этого ```terraform plan``` сработал
 
 # Задача 3
-1) Выводим **state list** командой ```terraform statelist```
+Создал новую ветку terraform-hotfix командой ```git checkout -b terraform-hotfix```
+Проверил код через ```tflint``` и получил следующие предупреждения:
 ```
-data.template_file.cloudinit
-module.analytics-vm.data.yandex_compute_image.my_image
-module.analytics-vm.yandex_compute_instance.vm[0]
-module.marketing-vm.data.yandex_compute_image.my_image
-module.marketing-vm.yandex_compute_instance.vm[0]
-module.marketing-vm.yandex_compute_instance.vm[1]
-module.vpc.yandex_vpc_network.network
-module.vpc.yandex_vpc_subnet.subnet["0"]
-module.vpc.yandex_vpc_subnet.subnet["1"]
-module.vpc.yandex_vpc_subnet.subnet["2"]
+i.grishunin@igrishunin:~/NETOLOGY/ter-homework-04$ tflint
+8 issue(s) found:
+
+Warning: Module source "git::https://github.com/udjin10/yandex_compute_instance.git?ref=main" uses a default branch as ref (main) (terraform_module_pinned_source)
+
+  on main.tf line 8:
+   8:   source         = "git::https://github.com/udjin10/yandex_compute_instance.git?ref=main"
+
+Reference: https://github.com/terraform-linters/tflint-ruleset-terraform/blob/v0.17.0/docs/rules/terraform_module_pinned_source.md
+
+Warning: Module source "git::https://github.com/udjin10/yandex_compute_instance.git?ref=main" uses a default branch as ref (main) (terraform_module_pinned_source)
+
+  on main.tf line 25:
+  25:   source         = "git::https://github.com/udjin10/yandex_compute_instance.git?ref=main"
+
+Reference: https://github.com/terraform-linters/tflint-ruleset-terraform/blob/v0.17.0/docs/rules/terraform_module_pinned_source.md
+
+Warning: Missing version constraint for provider "template" in `required_providers` (terraform_required_providers)
+
+  on main.tf line 41:
+  41: data "template_file" "cloudinit" {
+
+Reference: https://github.com/terraform-linters/tflint-ruleset-terraform/blob/v0.17.0/docs/rules/terraform_required_providers.md
+
+Warning: Missing version constraint for provider "random" in `required_providers` (terraform_required_providers)
+
+  on main.tf line 50:
+  50: resource "random_password" "db_password" {
+
+Reference: https://github.com/terraform-linters/tflint-ruleset-terraform/blob/v0.17.0/docs/rules/terraform_required_providers.md
+
+Warning: Missing version constraint for provider "yandex" in `required_providers` (terraform_required_providers)
+
+  on providers.tf line 3:
+   3:     yandex = {
+   4:       source = "yandex-cloud/yandex"
+   5:     }
+
+Reference: https://github.com/terraform-linters/tflint-ruleset-terraform/blob/v0.17.0/docs/rules/terraform_required_providers.md
+
+Warning: [Fixable] variable "vms_ssh_root_key" is declared but not used (terraform_unused_declarations)
+
+  on variables.tf line 42:
+  42: variable "vms_ssh_root_key" {
+
+Reference: https://github.com/terraform-linters/tflint-ruleset-terraform/blob/v0.17.0/docs/rules/terraform_unused_declarations.md
+
+Warning: [Fixable] variable "vm_web_name" is declared but not used (terraform_unused_declarations)
+
+  on variables.tf line 49:
+  49: variable "vm_web_name" {
+
+Reference: https://github.com/terraform-linters/tflint-ruleset-terraform/blob/v0.17.0/docs/rules/terraform_unused_declarations.md
+
+Warning: [Fixable] variable "vm_db_name" is declared but not used (terraform_unused_declarations)
+
+  on variables.tf line 56:
+  56: variable "vm_db_name" {
+
+Reference: https://github.com/terraform-linters/tflint-ruleset-terraform/blob/v0.17.0/docs/rules/terraform_unused_declarations.md
 ```
-2) Удаляем модуль **vpc** ```terraform state rm module.vpc```
-3) Удаляем модули **vm** ```terraform state rm module.marketing-vm``` и ```terraform state rm module.analytics-vm```
-4) Импортируем обратно командами
+Для устранения добавил в файл **providers.tf** в блок с **required_providers**
 ```
-terraform import module.vpc.yandex_vpc_network.network enpj33hqcnf3birigo0q
-terraform import 'module.vpc.yandex_vpc_subnet.subnet["1"]' fl8jdi3vovmeat97fuht<img width="965" height="193" alt="image" src="https://github.com/user-attachments/assets/e51704d9-a0d6-4a3c-bef6-7164ab8dfe01" />
-
-terraform import 'module.vpc.yandex_vpc_subnet.subnet["0"]' e9b9knhbus9a1d0m4jkd
-terraform import 'module.vpc.yandex_vpc_subnet.subnet["2"]' ajcuacnritqksrgvhbr1
-terraform import module.marketing-vm.yandex_compute_instance.vm[0] fv46pjvbrcb9agodihdc
-terraform import module.marketing-vm.yandex_compute_instance.vm[1] fhmi8b85thgp2850n5a8
-terraform import module.analytics-vm.yandex_compute_instance.vm[0] fv4qu4j0a1k7mshev6qb
+random = {
+      source  = "hashicorp/random"
+      version = ">= 3.6"
+    }
+    template = {
+      source  = "hashicorp/template"
+      version = ">= 0.1"
+    }
 ```
-P.S. такое количество импортов т.к. это задание выполнялось после **Задания 4**
+И в main.tf в модулях изменил **git::https://github.com/udjin10/yandex_compute_instance.git?ref=main** на **git::https://github.com/udjin10/yandex_compute_instance.git?ref=v2.1.0**
 
-P.S.S также при выполнении этого задания была изменена конечная конфигурация для **Задания 4**, а именно была изменена строка ```[for zone in var.default_zone : module.vpc.subnet_id_by_zone[zone]]``` на ```[for zone in var.default_zone : try(module.vpc.subnet_id_by_zone[zone], null)]```. Функция **try()** была добавлена из-за ошибок импорта подсетей. При импорте подсети без функции **try()** получал ошибку 
-
-<img width="965" height="193" alt="image" src="https://github.com/user-attachments/assets/b3fa6062-8252-4a54-a35d-60cdfb5ae3fe" />
-
-Если я правильно понял, то ошибка возникала из-за того, что **module.vm** ссылался на **module.vpc** и итерировался сразу по все зонам, которых не было в state файле.
-
-Вывод ```terraform plan```
-
-<img width="903" height="682" alt="image" src="https://github.com/user-attachments/assets/6d431679-60d3-4f66-be8c-140735eb214a" />
-
-# Задание 4
-В модуле **vpc** ресурс **yandex_vpc_subnet** был изменён на следующий код:
+Проверил код через ```checkov --skip-download -d .``` и получил следующие предупреждения:
 ```
-resource "yandex_vpc_subnet" "subnet" {
-  for_each = { for id, subnet in var.subnets : id  => subnet }
-  name           = "${var.name}-${each.key}"
-  zone           = each.value.zone
-  network_id     = yandex_vpc_network.network.id
-  v4_cidr_blocks = [each.value.cidr]
+Check: CKV_TF_1: "Ensure Terraform module sources use a commit hash"
+        FAILED for resource: marketing-vm
+        File: /main.tf:7-22
+
+                7  | module "marketing-vm" {
+                8  |   source         = "git::https://github.com/udjin10/yandex_compute_instance.git?ref=main"
+                9  |   network_id     = module.vpc.network_id
+                10 |   subnet_zones   = var.default_zone
+                11 |   subnet_ids     = [for zone in var.default_zone : try(module.vpc.subnet_id_by_zone[zone], null)]
+                12 |   instance_name  = var.vm_instance_name.marketing
+                13 |   instance_count = 2
+                14 |   image_family   = var.vm_image_family_ubuntu.marketing
+                15 |   public_ip      = var.vm_public_ip.marketing
+                16 |   labels         = var.vm_labels.marketing
+                17 | 
+                18 |   metadata = {
+                19 |     user-data          = data.template_file.cloudinit.rendered
+                20 |     serial-port-enable = var.vm_metadata_serial_port.analytics
+                21 |   }
+                22 | }
+
+Check: CKV_TF_2: "Ensure Terraform module sources use a tag with a version number"
+        FAILED for resource: marketing-vm
+        File: /main.tf:7-22
+
+                7  | module "marketing-vm" {
+                8  |   source         = "git::https://github.com/udjin10/yandex_compute_instance.git?ref=main"
+                9  |   network_id     = module.vpc.network_id
+                10 |   subnet_zones   = var.default_zone
+                11 |   subnet_ids     = [for zone in var.default_zone : try(module.vpc.subnet_id_by_zone[zone], null)]
+                12 |   instance_name  = var.vm_instance_name.marketing
+                13 |   instance_count = 2
+                14 |   image_family   = var.vm_image_family_ubuntu.marketing
+                15 |   public_ip      = var.vm_public_ip.marketing
+                16 |   labels         = var.vm_labels.marketing
+                17 | 
+                18 |   metadata = {
+                19 |     user-data          = data.template_file.cloudinit.rendered
+                20 |     serial-port-enable = var.vm_metadata_serial_port.analytics
+                21 |   }
+                22 | }
+
+Check: CKV_TF_1: "Ensure Terraform module sources use a commit hash"
+        FAILED for resource: analytics-vm
+        File: /main.tf:24-39
+
+                24 | module "analytics-vm" {
+                25 |   source         = "git::https://github.com/udjin10/yandex_compute_instance.git?ref=main"
+                26 |   network_id     = module.vpc.network_id
+                27 |   subnet_zones   = var.default_zone
+                28 |   subnet_ids     = [for zone in var.default_zone : try(module.vpc.subnet_id_by_zone[zone], null)]
+                29 |   instance_name  = var.vm_instance_name.analytics
+                30 |   instance_count = 1
+                31 |   image_family   = var.vm_image_family_ubuntu.analytics
+                32 |   public_ip      = var.vm_public_ip.analytics
+                33 |   labels         = var.vm_labels.analytics
+                34 | 
+                35 |   metadata = {
+                36 |     user-data          = data.template_file.cloudinit.rendered
+                37 |     serial-port-enable = var.vm_metadata_serial_port.analytics
+                38 |   }
+                39 | }
+
+Check: CKV_TF_2: "Ensure Terraform module sources use a tag with a version number"
+        FAILED for resource: analytics-vm
+        File: /main.tf:24-39
+
+                24 | module "analytics-vm" {
+                25 |   source         = "git::https://github.com/udjin10/yandex_compute_instance.git?ref=main"
+                26 |   network_id     = module.vpc.network_id
+                27 |   subnet_zones   = var.default_zone
+                28 |   subnet_ids     = [for zone in var.default_zone : try(module.vpc.subnet_id_by_zone[zone], null)]
+                29 |   instance_name  = var.vm_instance_name.analytics
+                30 |   instance_count = 1
+                31 |   image_family   = var.vm_image_family_ubuntu.analytics
+                32 |   public_ip      = var.vm_public_ip.analytics
+                33 |   labels         = var.vm_labels.analytics
+                34 | 
+                35 |   metadata = {
+                36 |     user-data          = data.template_file.cloudinit.rendered
+                37 |     serial-port-enable = var.vm_metadata_serial_port.analytics
+                38 |   }
+                39 | }
+
+Check: CKV_YC_1: "Ensure security group is assigned to database cluster."
+        FAILED for resource: module.mysql_cluster.yandex_mdb_mysql_cluster.cluster
+        File: /mysql/main.tf:10-36
+        Calling File: /main.tf:59-66
+
+                10 | resource "yandex_mdb_mysql_cluster" "cluster" {
+                11 |   name                = var.name
+                12 |   environment         = var.environment
+                13 |   network_id          = var.network_id
+                14 |   version             = var.mysql_version
+                15 | 
+                16 |   resources {
+                17 |     resource_preset_id = var.resource_preset_id
+                18 |     disk_type_id       = var.disk_type
+                19 |     disk_size          = var.disk_size
+                20 |   }
+                21 | 
+                22 |   host {
+                23 |     zone             = var.zone
+                24 |     subnet_id        = var.subnet_id
+                25 |     assign_public_ip = var.public_ip
+                26 |   }
+                27 | 
+                28 |   dynamic "host" {
+                29 |     for_each = range(var.ha ? 1 : 0)
+                30 |     content {
+                31 |       zone             = var.zone
+                32 |       subnet_id        = var.subnet_id
+                33 |       assign_public_ip = var.public_ip
+                34 |     }
+                35 |   }
+                36 | }
+```
+Для начала Исправил ошибки **Ensure Terraform module sources use a commit hash** и добавил хеш необходимого коммита ```git::https://github.com/udjin10/yandex_compute_instance.git?ref=97fe51b7341df99a57ff717e42347e185232fa31```. Далее для исправления предупреждения об отсутствии групп безопасности у кластера баз данных решил модифицировать модуль **vpc**. Добавил в **vpc/main.tf** ресурс **yandex_vpc_security_group**:
+```
+resource "yandex_vpc_security_group" "security" {
+  for_each = var.security_group
+
+  name       = each.key
+  network_id = yandex_vpc_network.network.id
+  folder_id  = var.folder_id
+
+  dynamic "ingress" {
+    for_each = each.value.ingress
+    content {
+      protocol       = lookup(ingress.value, "protocol", null)
+      description    = lookup(ingress.value, "description", null)
+      port           = lookup(ingress.value, "port", null)
+      from_port      = lookup(ingress.value, "from_port", null)
+      to_port        = lookup(ingress.value, "to_port", null)
+      v4_cidr_blocks = lookup(ingress.value, "v4_cidr_blocks", null)
+    }
+  }
+
+  dynamic "egress" {
+    for_each = each.value.egress
+    content {
+      protocol       = lookup(egress.value, "protocol", null)
+      description    = lookup(egress.value, "description", null)
+      port           = lookup(egress.value, "port", null)
+      from_port      = lookup(egress.value, "from_port", null)
+      to_port        = lookup(egress.value, "to_port", null)
+      v4_cidr_blocks = lookup(egress.value, "v4_cidr_blocks", null)
+    }
+  }
 }
 ```
-Был добавлен **for_each** который итерируется по списку **var.subnets**, где **id** - это ключ, а именно номер объектов в списке 0;1;2 и т.д., а **subnet** - это значение **value.zone**; **value.cidr** ит.д. 
-Также был добавлен **output "subnet_id_by_zone"**:
+Далее в **vpc/variables.tf** переменную **security_group**:
 ```
-output "subnet_id_by_zone" {
-  value = { for k, v in yandex_vpc_subnet.subnet: v.zone => v.id }
+variable "security_group" {
+  type = map(object({
+    ingress = list(object({
+      protocol       = string
+      description    = string
+      v4_cidr_blocks = list(string)
+      port           = optional(number)
+      from_port      = optional(number)
+      to_port        = optional(number)
+    }))
+    egress = list(object({
+      protocol       = string
+      description    = string
+      v4_cidr_blocks = list(string)
+      port           = optional(number)
+      from_port      = optional(number)
+      to_port        = optional(number)
+    }))
+  }))
+
+  default = {
+    security1 = {
+      ingress = [
+        {
+          protocol       = "TCP"
+          description    = "разрешить входящий ssh"
+          v4_cidr_blocks = ["0.0.0.0/0"]
+          port           = 22
+        },
+        { 
+          protocol       = "TCP"
+          description    = "разрешить входящий  http"
+          v4_cidr_blocks = ["0.0.0.0/0"]
+          port           = 80
+        },
+        { 
+          protocol       = "TCP"
+          description    = "разрешить входящий https"
+          v4_cidr_blocks = ["0.0.0.0/0"]
+          port           = 443
+        }
+      ]
+      egress = [
+        {
+          protocol       = "TCP"
+          description    = "разрешить весь исходящий трафик"
+          v4_cidr_blocks = ["0.0.0.0/0"]
+          from_port      = 0
+          to_port        = 65365
+        }
+      ]
+    }
+  }
+}       
+```
+Переменная была создана именно в таком виде, потому что я хотел, чтобы можно было создавать сразу несколько разных групп безопасности в рамках модуля **vpc**, а далее добавлять их к необходимым ресурсам в любом количестве. Поэтому мы в ресурсе с группами безопасности итерируемся по ключам(названиям групп безопасности), создавая такое количество групп безопасностей сколько имён у мапы в переменной **security_group**, а внутри них уже добавляем необходимое количество **ingress** и **egress** правил.
+Также для получения **id** группы безопасностей в рут модуле был создан **output**:
+```
+output "security_id_by_name" {
+  value = { for k, v in yandex_vpc_security_group.security: v.name => v.id }
 }
 ```
-Здесь мы итерируемся по ресурсу **yandex_vpc_subnet.subnet**, где k - ключ, v - значение. В итоге мы делаем пару ключ значений, где зона соответствует id подсети(для удобного использования в root module)
-Также в модуле создаём переменную 
+В котором id необходимой группы можно получить через её имя
+
+Далее в рут модуле **main.tf** был отредактирован модуль **vpc**, а именно добавлены поля **security_group** и **folder_id**:
+```
+module "vpc" {
+  source = "./vpc"
+  name = var.vpc_name
+  subnets = var.vpc_subnets
+  security_group = var.security_groups 
+  folder_id = var.folder_id
+}
+```
+А также был отредактирован модуль **mysql_cluster**(как в рут модуле, так и в папке самого модуля mysql) и добавлено поле ```security_group_ids = local.security_group_ids``` в рут модуле и ```security_group_ids  = var.security_group_ids``` в папке с самим модулем. Обращение к locals пришлось использовать т.к. не было возможности передать список из групп безопасности динамически... Можно было только передать значение в виде ```module.vpc.security_id_by_name[var.security_group_name]```, но в таком случае можно привязать только 1 группу безопасности, поэтому в locals было добавлено формирование списка:
+```
+security_group_ids = [
+    for name in var.mysql_cluster_security_groups: module.vpc.security_id_by_name[name]
+  ]
+```
+А также добавлены переменные в **variables.tf**:
+```
+variable "mysql_cluster_security_groups" {
+  type = list(string)
+}
+```
+и
+```
+variable "security_groups" {
+  type = map(object({
+    ingress = list(object({
+      protocol       = string
+      description    = string
+      v4_cidr_blocks = list(string)
+      port           = optional(number)
+      from_port      = optional(number)
+      to_port        = optional(number)
+    }))
+    egress  = list(object({
+      protocol       = string
+      description    = string
+      v4_cidr_blocks = list(string)
+      port           = optional(number)
+      from_port      = optional(number)
+      to_port        = optional(number)
+    }))
+  }))
+}
+```
+В terraform.tfvars декларация групп безопасности выглядит так:
+```
+security_groups = {
+  sec1 = {
+    ingress = [
+      {
+        protocol       = "TCP"
+        description    = "разрешить входящий ssh"
+        v4_cidr_blocks = ["0.0.0.0/0"]
+        port           = 22
+      },
+      { 
+        protocol       = "TCP"
+        description    = "разрешить входящий  http"
+        v4_cidr_blocks = ["0.0.0.0/0"]
+        port           = 80
+      },
+      { 
+        protocol       = "TCP"
+        description    = "разрешить входящий https"
+        v4_cidr_blocks = ["0.0.0.0/0"]
+        port           = 443
+      }
+    ]
+    egress = [
+      {
+        protocol       = "TCP"
+        description    = "разрешить весь исходящий трафик"
+        v4_cidr_blocks = ["0.0.0.0/0"]
+        from_port      = 0
+        to_port        = 65365
+      }
+    ]
+  }
+  sec-database = {
+    ingress = [
+      {
+        protocol       = "TCP"
+        description    = "разрешить входящий ssh"
+        v4_cidr_blocks = ["0.0.0.0/0"]
+        port           = 22
+      },
+      { 
+        protocol       = "TCP"
+        description    = "разрешить входящий трафик на СУБД"
+        v4_cidr_blocks = ["0.0.0.0/0"]
+        port           = 3306
+      }
+
+    ]
+    egress = [
+      {
+        protocol       = "TCP"
+        description    = "разрешить весь исходящий трафик"
+        v4_cidr_blocks = ["0.0.0.0/0"]
+        from_port      = 0
+        to_port        = 65365
+      }
+    ]
+  }
+}
+```
+А указание необходимые групп безопасности для привязки к кластеру БД так:
+```
+mysql_cluster_security_groups = ["sec-database"]
+```
+
+Ссылка на PR <a>https://github.com/IGrishunin/ter-homework-04/pull/2/files</a>
+
+# Задача 4
+Была добавлена валидация переменных в модуле **vpc** и модуле **mysql**.
+**VPC**:
 ```
 variable "subnets" {
   type = list(object({
     zone = string
     cidr = string
   }))
+
+  default = [
+    {
+      zone = "ru-central1-a",
+      cidr = "10.100.0.0/16"
+    }
+  ]
+
+  validation {
+    condition = alltrue([
+      for v in var.subnets: can(cidrhost(v.cidr, 0))
+    ])
+    error_message = "Указан некорректный CIDR"
+  }
+
+  validation {
+    condition = alltrue([
+      for v in var.subnets: contains(["ru-central1-a", "ru-central1-d", "ru-central1-e", "ru-central1-f"], v.zone)
+    ])
+    error_message = "Указана несуществующая зона"
+  }
 }
 ```
-А в **main.tf** в модуле **marketing-vm** изменяем **subnet_ids** на ```subnet_ids = [for zone in var.default_zone : try(module.vpc.subnet_id_by_zone[zone], null)]```. Здесь мы циклом проходимся по всем зонам из переменной **default_zone** и каждую зону подставляем в заранее созданный output в модуле **module.vpc.subnet_id_by_zone[zone]**, а так как в **output** модуля мы указали, что **id** подсети можем получить из названия зоны, то получаем необходимый **id**. Вся эта конструкция обёрнута в квадратные скобки, чтобы в итоге мы получили список, который требует модуль **vm**. Функция try() была добавлена для того, чтобы предотвратить ошибки при импорте подсетей(см.задание 3)
-Результаты из консоли YC:
+Также валидация **security_group** в **VPC**:
+```
+validation {
+    condition = alltrue([
+      for k, v in var.security_group: alltrue([
+        for rule in v.ingress: contains(["TCP", "UDP", "ICMP", "AH", "ESP", "GRE"], rule.protocol)
+      ]) && alltrue([
+        for rule in v.egress: contains(["TCP", "UDP", "ICMP", "AH", "ESP", "GRE"], rule.protocol)
+      ])
+    ])
+    error_message = "Указан неверный протокол в правилах ingress или egress"
+  }
 
-<img width="1291" height="255" alt="image" src="https://github.com/user-attachments/assets/14e14990-8265-43c3-aca1-b17048366942" />
-<img width="1315" height="274" alt="image" src="https://github.com/user-attachments/assets/1ac62f47-51ec-49b2-8975-d1d0071f90b6" />
+  validation {
+    condition = alltrue([
+      for k, v in var.security_group: alltrue([
+        for rule in v.ingress: alltrue([
+          for cidr in rule.v4_cidr_blocks: can(cidrhost(cidr, 0))
+        ])
+      ]) && alltrue([
+        for rule in v.egress: alltrue([
+          for cidr in rule.v4_cidr_blocks: can(cidrhost(cidr, 0))
+        ])
+      ])
+    ])
+    error_message = "Указана неверная подсеть в блоке v4_cidr_blocks в ingress или egress блоке"
+  }
+
+  validation {
+    condition = alltrue([
+      for k, v in var.security_group: alltrue([
+        for rule in v.ingress: (rule.port == null && alltrue([
+          rule.from_port != null,
+          rule.to_port != null
+        ])) || (rule.port != null && alltrue([
+          rule.from_port == null,
+          rule.to_port == null
+        ]))
+      ]) && alltrue([
+        for rule in v.egress: (rule.port == null && alltrue([
+          rule.from_port != null,
+          rule.to_port != null
+        ])) || (rule.port != null && alltrue([
+          rule.from_port == null,
+          rule.to_port == null
+        ]))
+      ])
+    ])
+    error_message = "Должен быть указан один параметр port или 2 параметра from_port - to_port"
+  }
+
+  validation {
+    condition = alltrue([
+      for k,v in var.security_group: alltrue([
+        for rule in v.ingress: ((rule.from_port != null && rule.to_port != null) && (rule.from_port <= rule.to_port)) if rule.port == null
+      ]) && alltrue([
+        for rule in v.egress: ((rule.from_port != null && rule.to_port != null) && (rule.from_port <= rule.to_port)) if rule.port == null
+      ])
+    ])
+    error_message = "Значение from_port должно быть меньше или равно to_port"
+  }
+```
+Примеры выполнения валидации:
+1) Меняем протокол в **security_group** на TCP1
+```
+Error: Invalid value for variable
+│ 
+│   on variables.tf line 38:
+│   38: variable "security_group" {
+│     ├────────────────
+│     │ var.security_group is map of object with 1 element
+│ 
+│ Указан неверный протокол в правилах ingress или egress
+│ 
+│ This was checked by the validation rule at variables.tf:92,3-13.
+```
+2) Меняем **from_port** на значение больше, чем **to_port**:
+```
+Error: Invalid value for variable
+│ 
+│   on variables.tf line 38:
+│   38: variable "security_group" {
+│     ├────────────────
+│     │ var.security_group is map of object with 1 element
+│ 
+│ Значение from_port должно быть меньше или равно to_port
+│ 
+│ This was checked by the validation rule at variables.tf:141,3-13.
+```
+3) Меняем v4_cidr_blocks = ["0.0.0.0/0"] на ["0.0.0.0/0", "10.300.0.0/16"]:
+```
+Error: Invalid value for variable
+│ 
+│   on variables.tf line 38:
+│   38: variable "security_group" {
+│     ├────────────────
+│     │ var.security_group is map of object with 1 element
+│ 
+│ Указана неверная подсеть в блоке v4_cidr_blocks в ingress или egress блоке
+│ 
+│ This was checked by the validation rule at variables.tf:103,3-13.
+```
+Также в задании требуется написать проверку **ip**, а не подсети. Для этого создадим отдельное правило:
+```
+variable "ip" {
+  type = string
+  default = "192.168.0.1"
+  validation {
+    condition = can(cidrhost("${var.ip}/32", 0))
+    error_message = "test ip"
+  }
+}
+```
+Так как **cidrhost()** обязательно требует указать маску сети, то принудительно ставим 32 для проверки
+Вывод с неправильным значением **1920.168.0.1**:
+```
+Error: Invalid value for variable
+│ 
+│   on variables.tf line 153:
+│  153: variable "ip" {
+│     ├────────────────
+│     │ var.ip is "1920.168.0.1"
+│ 
+│ test ip
+│ 
+│ This was checked by the validation rule at variables.tf:156,3-13.
+```
 
 # Задача 5
-1) Создал модуль mysql со следующим содержимым main.tf
+1) Создал переменную test_string:
 ```
-terraform {
-  required_providers {
-    yandex = {
-      source = "yandex-cloud/yandex"
-    }
-  }
-  required_version = ">1.12.0"
-}
+variable "test_string" {
+  type = string
+  default = "teSt"
 
-resource "yandex_mdb_mysql_cluster" "cluster" {
-  name                = var.name
-  environment         = var.environment
-  network_id          = var.network_id
-  version             = var.mysql_version
-
-  resources {
-    resource_preset_id = var.resource_preset_id
-    disk_type_id       = var.disk_type
-    disk_size          = var.disk_size
-  }
-
-  host {
-    zone             = var.zone
-    subnet_id        = var.subnet_id
-    assign_public_ip = var.public_ip
-  }
-
-  dynamic "host" {
-    for_each = range(var.ha ? 1 : 0)
-    content {
-      zone             = var.zone
-      subnet_id        = var.subnet_id
-      assign_public_ip = var.public_ip
-    }
+  validation {
+    condition = var.test_string == lower(var.test_string)
+    error_message = "Строка содержит заглавные буквы"
   }
 }
 ```
-Так как cluster требует как минимум один блок хоста, то один блок создаётся всегда, а второй динамический и появляется только если **var.ha = true**
-Также создал переменные с дефолтами
+Если одна из букв заглавная, то получаю:
 ```
-variable "name" {
-  type = string
-  default = "mysql_cluster"
-}
-
-variable "environment" {
-  type = string
-  default = "PRESTABLE"
-}
-
-variable "network_id" {
-  type = string
-}
-
-variable "mysql_version" {
-  type = string
-  default = "8.0"
-}
-
-variable "disk_type" {
-  type = string
-  default = "network-hdd"
-}
-
-variable "disk_size" {
-  type = number
-  default = 10
-}
-
-variable "ha" {
-  type = bool
-  default = true
-}
-
-variable "zone" {
-  type = string
-  default = "ru-central1-a"
-}
-
-variable "subnet_id" {
-  type = string
-}
-
-variable "public_ip" {
-  type = bool
-  default = true
-}
-
-variable "resource_preset_id" {
-  type = string
-  default = "b2.medium"
-}
+Error: Invalid value for variable
+│ 
+│   on variables.tf line 180:
+│  180: variable "test_string" {
+│     ├────────────────
+│     │ var.test_string is "teSt"
+│ 
+│ Строка содержит заглавные буквы
+│ 
+│ This was checked by the validation rule at variables.tf:184,3-13.
 ```
-В root модуле создал **mysql_cluster**:
-```
-module "mysql_cluster" {
-  source = "./mysql"
-  name          = var.mysql_cluster_name
-  zone          = var.mysql_cluster_zone
-  network_id    = module.vpc.network_id
-  ha            = var.mysql_cluster_ha
-  subnet_id     = module.vpc.subnet_id_by_zone[var.mysql_cluster_zone]
-}
-```
-Для упрощения использовал подсеть и сеть, созданную в предыдущих заданиях через модуль **vpc**
-Для применения изменений использовал следующие значения
-```
-mysql_cluster_name = "cluster"
-mysql_cluster_ha = true
-mysql_cluster_zone = "ru-central1-a"
-```
-Скриншот из YC
+Иначе всё проходит
 
-<img width="1311" height="410" alt="image" src="https://github.com/user-attachments/assets/a10c90bc-77c8-4888-b238-6e0ad9fb9d73" />
-
-2) Добавил модуль **mysql_content**, в котором создал 2 ресурса: **yandex_mdb_mysql_database** и **yandex_mdb_mysql_user**
+3) Создал переменную с валидацией:
 ```
-resource "yandex_mdb_mysql_database" "db" {
-  cluster_id = var.cluster_id
-  name       = var.db_name
-}
+variable "in_the_end_there_can_be_only_one" {
+  description="Who is better Connor or Duncan?"
+  type = object({
+    Dunkan = optional(bool)
+    Connor = optional(bool)
+  })
 
-resource "yandex_mdb_mysql_user" "user" {
-  cluster_id = var.cluster_id
-  name       = var.db_username
-  password   = var.db_password
-  permission {
-    database_name = yandex_mdb_mysql_database.db.name
-    roles         = ["ALL"]
+  default = {
+    Dunkan = false
+    Connor = false
+  }
+
+  validation {
+    error_message = "There can be only one MacLeod"
+    condition = (var.in_the_end_there_can_be_only_one.Dunkan == true && var.in_the_end_there_can_be_only_one.Connor == false) || (var.in_the_end_there_can_be_only_one.Connor == true && var.in_the_end_there_can_be_only_one.Dunkan == false)
   }
 }
 ```
-Также **variables.tf** для него:
+Вывод, если обе **false** или **true**:
 ```
-variable "db_name" {
-  type = string
-  default = "my_db"
-}
+Error: Invalid value for variable
+│ 
+│   on variables.tf line 162:
+│  162: variable "in_the_end_there_can_be_only_one" {
+│     ├────────────────
+│     │ var.in_the_end_there_can_be_only_one.Connor is false
+│     │ var.in_the_end_there_can_be_only_one.Dunkan is false
+│ 
+│ There can be only one MacLeod
+│ 
+│ This was checked by the validation rule at variables.tf:174,3-13.
+╵
 
-variable "cluster_id" {
-  type = string
-}
-
-variable "db_username" {
-  type = string
-  default = "mysqluser"
-}
-
-variable "db_password" {
-  type = string
-}
+╷
+│ Warning: Due to the problems above, some expressions may produce unexpected results.
 ```
-Для того, чтобы при вызове этого модуля в рут модуле можно было узнать **id** кластера - в модуль **mysql** добавил output:
-```
-output "cluster_id" {
-  value = yandex_mdb_mysql_cluster.cluster.id
-}
-```
-В рут модуле предварительно был создан ресурс **random_password**
-```
-resource "random_password" "db_password" {
-  length = var.random_password_length
-  special = var.random_password_special
-  upper = var.random_password_upper
-  lower = var.random_password_lower
-  numeric = var.random_password_numeric
-  override_special = var.random_password_override_special
-}
-```
-А также создан модуль **mysql_cluster_content**
-```
-module "mysql_cluster_content" {
-  source = "./mysql_content"
-  cluster_id = module.mysql_cluster.cluster_id
-  db_name = var.mysql_cluster_db_name
-  db_username = var.mysql_cluster_db_username
-  db_password = length(var.manual_db_password) > 0 ? var.manual_db_password : random_password.db_password.result
-}
-```
-В строке **db_password** используется результат random_password только если пароль не указан явно в переменной **var.manual_db_password**
-
-3) План выполнения ```terraform apply``` с одним хостом в кластере**(ha=false)**
-
-<img width="830" height="1156" alt="image" src="https://github.com/user-attachments/assets/bd1e3583-727d-4d0b-83f3-56a2ab6ef67b" />
-
-Вывод из консоли YC
-
-<img width="1836" height="514" alt="image" src="https://github.com/user-attachments/assets/cbece07b-afb6-4dcc-ad8c-0f04164bbe6c" />
-
-План создания БД и пользователя:
-
-<img width="1116" height="976" alt="image" src="https://github.com/user-attachments/assets/17b67593-6554-44bf-bfcb-2a26658fd3d0" />
-
-Вывод из консоли YC
-
-<img width="1817" height="495" alt="image" src="https://github.com/user-attachments/assets/c7b95bfa-91d1-4bb2-aabd-f9d1f74baa6e" />
-
-Вывод плана после изменения переменной **ha** с false на true
-
-<img width="1674" height="634" alt="1" src="https://github.com/user-attachments/assets/86e1109b-2c02-4bf4-a8c5-94aa6cdd17d3" />
-
-Вывод YC
-
-<img width="1840" height="553" alt="160ca2c0-d306-4c16-8740-25aa11694ed3" src="https://github.com/user-attachments/assets/ec32478c-6e35-4b36-9da5-3d77584bf00a" />
-
-# Задача 6
-Создал из примера main.tf с модулем s3:
-```
-resource "random_string" "unique_id" {
-  length  = 8
-  upper   = false
-  lower   = true
-  numeric = true
-  special = false
-}
-
-module "s3" {
-  source = "git::https://github.com/terraform-yc-modules/terraform-yc-s3.git?ref=1.0.4"
-
-  max_size = var.max_size
-  bucket_name = "simple-bucket-${random_string.unique_id.result}"
-  versioning = {
-    enabled = true
-  }
-}
-```
-Применил
-
-<img width="1353" height="1193" alt="image" src="https://github.com/user-attachments/assets/1a84ec59-1272-4f74-8107-df3ea4f72cd7" />
-
-YC
-
-<img width="1442" height="460" alt="image" src="https://github.com/user-attachments/assets/dda73b64-d56c-4698-898a-4e9c5afcc0f0" />
-
+Если значения разные, то предупреждений нету
