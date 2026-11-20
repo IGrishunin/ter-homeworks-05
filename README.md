@@ -337,6 +337,9 @@ random = {
 ```
 И в main.tf в модулях изменил **git::https://github.com/udjin10/yandex_compute_instance.git?ref=main** на **git::https://github.com/udjin10/yandex_compute_instance.git?ref=v2.1.0**
 
+Проверил код через ```checkov --skip-download -d .``` и получил следующие предупреждения:
+
+
 
 
 
