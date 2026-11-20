@@ -167,7 +167,7 @@ Check: CKV_TF_2: "Ensure Terraform module sources use a tag with a version numbe
 1) Требует указать хеш коммита для модуля в блоке source
 2) Требует указать версию модуля отдельным тегом(не в блоке source)
 
-#Задача 2
+# Задача 2
 В **providers.tf** добавил секцию **backend**
 ```
 backend "s3" {
@@ -259,7 +259,7 @@ obtain a new lock on the remote state.
 ```
 После этого ```terraform plan``` сработал
 
-#Задача 3
+# Задача 3
 Создал новую ветку terraform-hotfix командой ```git checkout -b terraform-hotfix```
 Проверил код через ```tflint``` и получил следующие предупреждения:
 ```
@@ -670,7 +670,7 @@ mysql_cluster_security_groups = ["sec-database"]
 
 Ссылка на PR <a>https://github.com/IGrishunin/ter-homework-04/pull/2/files</a>
 
-#Задача 4
+# Задача 4
 Была добавлена валидация переменных в модуле **vpc** и модуле **mysql**.
 **VPC**:
 ```
@@ -830,7 +830,7 @@ Error: Invalid value for variable
 │ This was checked by the validation rule at variables.tf:156,3-13.
 ```
 
-#Задача 5
+# Задача 5
 1) Создал переменную test_string:
 ```
 variable "test_string" {
