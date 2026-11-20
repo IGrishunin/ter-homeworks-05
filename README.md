@@ -663,8 +663,237 @@ security_groups = {
   }
 }
 ```
-Ссылка на PR <a>https://github.com/IGrishunin/ter-homework-04/pull/2/files</a>
 А указание необходимые групп безопасности для привязки к кластеру БД так:
 ```
 mysql_cluster_security_groups = ["sec-database"]
 ```
+
+Ссылка на PR <a>https://github.com/IGrishunin/ter-homework-04/pull/2/files</a>
+
+#Задача 4
+Была добавлена валидация переменных в модуле **vpc** и модуле **mysql**.
+**VPC**:
+```
+variable "subnets" {
+  type = list(object({
+    zone = string
+    cidr = string
+  }))
+
+  default = [
+    {
+      zone = "ru-central1-a",
+      cidr = "10.100.0.0/16"
+    }
+  ]
+
+  validation {
+    condition = alltrue([
+      for v in var.subnets: can(cidrhost(v.cidr, 0))
+    ])
+    error_message = "Указан некорректный CIDR"
+  }
+
+  validation {
+    condition = alltrue([
+      for v in var.subnets: contains(["ru-central1-a", "ru-central1-d", "ru-central1-e", "ru-central1-f"], v.zone)
+    ])
+    error_message = "Указана несуществующая зона"
+  }
+}
+```
+Также валидация **security_group** в **VPC**:
+```
+validation {
+    condition = alltrue([
+      for k, v in var.security_group: alltrue([
+        for rule in v.ingress: contains(["TCP", "UDP", "ICMP", "AH", "ESP", "GRE"], rule.protocol)
+      ]) && alltrue([
+        for rule in v.egress: contains(["TCP", "UDP", "ICMP", "AH", "ESP", "GRE"], rule.protocol)
+      ])
+    ])
+    error_message = "Указан неверный протокол в правилах ingress или egress"
+  }
+
+  validation {
+    condition = alltrue([
+      for k, v in var.security_group: alltrue([
+        for rule in v.ingress: alltrue([
+          for cidr in rule.v4_cidr_blocks: can(cidrhost(cidr, 0))
+        ])
+      ]) && alltrue([
+        for rule in v.egress: alltrue([
+          for cidr in rule.v4_cidr_blocks: can(cidrhost(cidr, 0))
+        ])
+      ])
+    ])
+    error_message = "Указана неверная подсеть в блоке v4_cidr_blocks в ingress или egress блоке"
+  }
+
+  validation {
+    condition = alltrue([
+      for k, v in var.security_group: alltrue([
+        for rule in v.ingress: (rule.port == null && alltrue([
+          rule.from_port != null,
+          rule.to_port != null
+        ])) || (rule.port != null && alltrue([
+          rule.from_port == null,
+          rule.to_port == null
+        ]))
+      ]) && alltrue([
+        for rule in v.egress: (rule.port == null && alltrue([
+          rule.from_port != null,
+          rule.to_port != null
+        ])) || (rule.port != null && alltrue([
+          rule.from_port == null,
+          rule.to_port == null
+        ]))
+      ])
+    ])
+    error_message = "Должен быть указан один параметр port или 2 параметра from_port - to_port"
+  }
+
+  validation {
+    condition = alltrue([
+      for k,v in var.security_group: alltrue([
+        for rule in v.ingress: ((rule.from_port != null && rule.to_port != null) && (rule.from_port <= rule.to_port)) if rule.port == null
+      ]) && alltrue([
+        for rule in v.egress: ((rule.from_port != null && rule.to_port != null) && (rule.from_port <= rule.to_port)) if rule.port == null
+      ])
+    ])
+    error_message = "Значение from_port должно быть меньше или равно to_port"
+  }
+```
+Примеры выполнения валидации:
+1) Меняем протокол в **security_group** на TCP1
+```
+Error: Invalid value for variable
+│ 
+│   on variables.tf line 38:
+│   38: variable "security_group" {
+│     ├────────────────
+│     │ var.security_group is map of object with 1 element
+│ 
+│ Указан неверный протокол в правилах ingress или egress
+│ 
+│ This was checked by the validation rule at variables.tf:92,3-13.
+```
+2) Меняем **from_port** на значение больше, чем **to_port**:
+```
+Error: Invalid value for variable
+│ 
+│   on variables.tf line 38:
+│   38: variable "security_group" {
+│     ├────────────────
+│     │ var.security_group is map of object with 1 element
+│ 
+│ Значение from_port должно быть меньше или равно to_port
+│ 
+│ This was checked by the validation rule at variables.tf:141,3-13.
+```
+3) Меняем v4_cidr_blocks = ["0.0.0.0/0"] на ["0.0.0.0/0", "10.300.0.0/16"]:
+```
+Error: Invalid value for variable
+│ 
+│   on variables.tf line 38:
+│   38: variable "security_group" {
+│     ├────────────────
+│     │ var.security_group is map of object with 1 element
+│ 
+│ Указана неверная подсеть в блоке v4_cidr_blocks в ingress или egress блоке
+│ 
+│ This was checked by the validation rule at variables.tf:103,3-13.
+```
+Также в задании требуется написать проверку **ip**, а не подсети. Для этого создадим отдельное правило:
+```
+variable "ip" {
+  type = string
+  default = "192.168.0.1"
+  validation {
+    condition = can(cidrhost("${var.ip}/32", 0))
+    error_message = "test ip"
+  }
+}
+```
+Так как **cidrhost()** обязательно требует указать маску сети, то принудительно ставим 32 для проверки
+Вывод с неправильным значением **1920.168.0.1**:
+```
+Error: Invalid value for variable
+│ 
+│   on variables.tf line 153:
+│  153: variable "ip" {
+│     ├────────────────
+│     │ var.ip is "1920.168.0.1"
+│ 
+│ test ip
+│ 
+│ This was checked by the validation rule at variables.tf:156,3-13.
+```
+
+#Задача 5
+1) Создал переменную test_string:
+```
+variable "test_string" {
+  type = string
+  default = "teSt"
+
+  validation {
+    condition = var.test_string == lower(var.test_string)
+    error_message = "Строка содержит заглавные буквы"
+  }
+}
+```
+Если одна из букв заглавная, то получаю:
+```
+Error: Invalid value for variable
+│ 
+│   on variables.tf line 180:
+│  180: variable "test_string" {
+│     ├────────────────
+│     │ var.test_string is "teSt"
+│ 
+│ Строка содержит заглавные буквы
+│ 
+│ This was checked by the validation rule at variables.tf:184,3-13.
+```
+Иначе всё проходит
+
+3) Создал переменную с валидацией:
+```
+variable "in_the_end_there_can_be_only_one" {
+  description="Who is better Connor or Duncan?"
+  type = object({
+    Dunkan = optional(bool)
+    Connor = optional(bool)
+  })
+
+  default = {
+    Dunkan = false
+    Connor = false
+  }
+
+  validation {
+    error_message = "There can be only one MacLeod"
+    condition = (var.in_the_end_there_can_be_only_one.Dunkan == true && var.in_the_end_there_can_be_only_one.Connor == false) || (var.in_the_end_there_can_be_only_one.Connor == true && var.in_the_end_there_can_be_only_one.Dunkan == false)
+  }
+}
+```
+Вывод, если обе **false** или **true**:
+```
+Error: Invalid value for variable
+│ 
+│   on variables.tf line 162:
+│  162: variable "in_the_end_there_can_be_only_one" {
+│     ├────────────────
+│     │ var.in_the_end_there_can_be_only_one.Connor is false
+│     │ var.in_the_end_there_can_be_only_one.Dunkan is false
+│ 
+│ There can be only one MacLeod
+│ 
+│ This was checked by the validation rule at variables.tf:174,3-13.
+╵
+
+╷
+│ Warning: Due to the problems above, some expressions may produce unexpected results.
+```
+Если значения разные, то предупреждений нету
