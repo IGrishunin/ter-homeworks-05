@@ -44,6 +44,13 @@ resource "random_password" "db_password" {
   override_special = var.random_password_override_special
 }
 
+data "yandex_lockbox_secret_version" "db_password" {
+  count      = length(var.lockbox_db_secret_id) > 0 ? 1 : 0
+
+  secret_id  = var.lockbox_db_secret_id
+  version_id = var.lockbox_db_secret_version
+}
+
 module "mysql_cluster" {
   source     = "./mysql"
   name       = var.mysql_cluster_name
@@ -59,8 +66,8 @@ module "mysql_cluster_content" {
   cluster_id  = module.mysql_cluster.cluster_id
   db_name     = var.mysql_cluster_db_name
   db_username = var.mysql_cluster_db_username
-  db_password = length(var.manual_db_password) > 0 ? var.manual_db_password : random_password.db_password.result
-#  depends_on  = [module.mysql_cluster]
+  db_password = local.db_password
+  depends_on  = [module.mysql_cluster]
 }
 
 module "container_registry" {
@@ -71,4 +78,3 @@ module "container_registry" {
   role      = var.container_registry_role
   members   = var.container_registry_members
 }
-

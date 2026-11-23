@@ -204,3 +204,13 @@ variable "container_registry_members" {
   type = list(string)
   default = []
 }
+
+##lockbox
+
+variable "lockbox_db_secret_id" {
+  type = string
+}
+
+variable "lockbox_db_secret_version" {
+  type = string
+}

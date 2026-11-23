@@ -1,0 +1,12 @@
+#ID Облака
+cloud_id  = ""
+#ID Каталога
+folder_id = ""
+#Токен аккаунта
+token = ""
+#Ручное указания пароля для пользователя БД. НЕ ПЕРЕОПРЕДЕЛЯЕТ LOCKBOX!!!
+manual_db_password = ""
+#ID секрета lockbox. ЕСЛИ УКАЗАНО, ТО БУДЕТ ЯВНО ИСПОЛЬЗОВАТЬСЯ ДЛЯ ПАРОЛЯ ПОЛЬЗОВАТЕЛЯ БД!!!
+lockbox_db_secret_id = ""
+#ID версии секрета lockbox
+lockbox_db_secret_version = ""
