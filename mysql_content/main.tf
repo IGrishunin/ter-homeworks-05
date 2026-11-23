@@ -20,4 +20,6 @@ resource "yandex_mdb_mysql_user" "user" {
     database_name = yandex_mdb_mysql_database.db.name
     roles         = ["ALL"]
   }
+
+  depends_on = [yandex_mdb_mysql_database.db]
 }

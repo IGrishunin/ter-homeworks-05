@@ -6,37 +6,21 @@ module "vpc" {
   folder_id = var.folder_id
 }
 
-module "marketing-vm" {
-  source         = "git::https://github.com/udjin10/yandex_compute_instance.git?ref=97fe51b7341df99a57ff717e42347e185232fa31"
-  network_id     = module.vpc.network_id
-  subnet_zones   = var.default_zone
-  subnet_ids     = [for zone in var.default_zone : try(module.vpc.subnet_id_by_zone[zone], null)]
-  instance_name  = var.vm_instance_name.marketing
-  instance_count = 2
-  image_family   = var.vm_image_family_ubuntu.marketing
-  public_ip      = var.vm_public_ip.marketing
-  labels         = var.vm_labels.marketing
+module "web-vm" {
+  source             = "git::https://github.com/udjin10/yandex_compute_instance.git?ref=97fe51b7341df99a57ff717e42347e185232fa31"
+  network_id         = module.vpc.network_id
+  subnet_zones       = var.default_zone
+  subnet_ids         = [for zone in var.default_zone : try(module.vpc.subnet_id_by_zone[zone], null)]
+  instance_name      = var.vm_instance_name.web
+  instance_count     = 1
+  image_family       = var.vm_image_family_ubuntu.web
+  public_ip          = var.vm_public_ip.web
+  labels             = var.vm_labels.web
+  security_group_ids = local.security_group_ids_web
 
   metadata = {
     user-data          = data.template_file.cloudinit.rendered
-    serial-port-enable = var.vm_metadata_serial_port.analytics
-  }
-}
-
-module "analytics-vm" {
-  source         = "git::https://github.com/udjin10/yandex_compute_instance.git?ref=97fe51b7341df99a57ff717e42347e185232fa31"
-  network_id     = module.vpc.network_id
-  subnet_zones   = var.default_zone
-  subnet_ids     = [for zone in var.default_zone : try(module.vpc.subnet_id_by_zone[zone], null)]
-  instance_name  = var.vm_instance_name.analytics
-  instance_count = 1
-  image_family   = var.vm_image_family_ubuntu.analytics
-  public_ip      = var.vm_public_ip.analytics
-  labels         = var.vm_labels.analytics
-
-  metadata = {
-    user-data          = data.template_file.cloudinit.rendered
-    serial-port-enable = var.vm_metadata_serial_port.analytics
+    serial-port-enable = var.vm_metadata_serial_port.web
   }
 }
 
@@ -46,6 +30,8 @@ data "template_file" "cloudinit" {
   vars     = {
     ssh-pub-key = local.ssh-pub-key,
     packages    = jsonencode(var.vm_cloud_init_packages)
+    user        = var.vm_user
+    env_content = indent(6, local.env_content)
   }
 }
 
@@ -65,7 +51,7 @@ module "mysql_cluster" {
   network_id = module.vpc.network_id
   ha         = var.mysql_cluster_ha
   subnet_id  = module.vpc.subnet_id_by_zone[var.mysql_cluster_zone]
-  security_group_ids = local.security_group_ids
+  security_group_ids = local.security_group_ids_database
 }
 
 module "mysql_cluster_content" {
@@ -74,4 +60,15 @@ module "mysql_cluster_content" {
   db_name     = var.mysql_cluster_db_name
   db_username = var.mysql_cluster_db_username
   db_password = length(var.manual_db_password) > 0 ? var.manual_db_password : random_password.db_password.result
+#  depends_on  = [module.mysql_cluster]
 }
+
+module "container_registry" {
+  source    = "./container_registry"
+  name      = var.container_registry_name
+  labels    = var.container_registry_labels
+  folder_id = var.folder_id
+  role      = var.container_registry_role
+  members   = var.container_registry_members
+}
+

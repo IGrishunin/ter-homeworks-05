@@ -112,6 +112,13 @@ variable "vm_cloud_init_packages" {
   default = ["vim", "nginx"]
 }
 
+variable "vm_security_groups" {
+  type = list(string)
+}
+
+variable "vm_user" {
+  type = string
+}
 ##mysql
 
 variable "mysql_cluster_name" {
@@ -169,3 +176,31 @@ variable "manual_db_password" {
   default = ""
 }
 
+##docker
+variable "docker_image_name" {
+  type = string
+}
+
+##container_registry
+variable "container_registry_name" {
+  type = string
+  default = "develop-registry"
+}
+
+variable "container_registry_labels" {
+  type = map(string)
+
+  default = {
+    environment = "dev"
+  }
+}
+
+variable "container_registry_role" {
+  type = string
+  default = ""
+}
+
+variable "container_registry_members" {
+  type = list(string)
+  default = []
+}

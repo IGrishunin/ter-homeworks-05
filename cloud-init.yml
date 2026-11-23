@@ -1,11 +1,23 @@
 #cloud-config
+package_update: true
+package_upgrade: false
+packages: ${packages}
 users:
-  - name: ubuntu
-    groups: sudo
+  - name: ${user}
+    groups: sudo, docker
     shell: /bin/bash
     sudo: ["ALL=(ALL) NOPASSWD:ALL"]
     ssh_authorized_keys:
       - ${ssh-pub-key}
-package_update: true
-package_upgrade: false
-packages: ${packages}
+write_files:
+  - path: /opt/web/.env
+    permissions: '0600'
+    owner: ${user}:${user}
+    defer: true
+    content: |
+      ${env_content}
+runcmd:
+  - git clone https://github.com/IGrishunin/terraform-end-src-web.git /tmp/temp
+  - cp -ra /tmp/temp/* /opt/web/
+  - rm -rf /tmp/temp
+  - chown -R ${user}:${user} /opt/web
